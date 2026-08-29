@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yaqcg - Yet Another QrCode Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=Russo+One&family=Bebas+Neue&family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div>
+      <div class="brand-title">YAQCG</div>
+      <div class="brand-sub">Yet Another QrCode Generator</div>
+    </div>
+  </div>
+  <div class="theme-switch">
+    <span id="theme-label">Acido</span>
+    <input id="theme-slider" type="range" min="0" max="6" value="0" step="1">
+  </div>
+  <div class="lang-toggle">
+    <button type="button" data-lang="it" class="active">IT</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ===================== COLONNA CONTROLLI ===================== -->
+  <div class="controls-col">
+
+    <!-- CONTENUTO -->
+    <div class="panel">
+      <div class="panel-title"><span class="num">01</span> <span data-i18n="sec.content">Contenuto</span></div>
+
+      <div class="tabs">
+        <button type="button" class="tab-btn active" data-content-type="text" data-i18n="tab.text">Testo</button>
+        <button type="button" class="tab-btn" data-content-type="url" data-i18n="tab.url">URL</button>
+        <button type="button" class="tab-btn" data-content-type="vcard" data-i18n="tab.vcard">vCard</button>
+      </div>
+
+      <div class="content-panel active" data-content-panel="text">
+        <div class="field">
+          <label class="field-label" data-i18n="field.text">Testo libero</label>
+          <textarea id="inputText" data-i18n-ph="field.text.ph" placeholder="Scrivi il contenuto del QR..."></textarea>
+        </div>
+      </div>
+
+      <div class="content-panel" data-content-panel="url">
+        <div class="field">
+          <label class="field-label" data-i18n="field.url">Indirizzo URL</label>
+          <input type="text" id="inputUrl" data-i18n-ph="field.url.ph" placeholder="esempio.it oppure https://esempio.it">
+          <div class="hint" data-i18n="field.url.hint">L'indirizzo viene codificato esattamente come scritto, senza correzioni automatiche.</div>
+        </div>
+      </div>
+
+      <div class="content-panel" data-content-panel="vcard">
+        <div class="field">
+          <label class="field-label" data-i18n="field.vcardVersion">Versione vCard</label>
+          <select id="vcardVersion">
+            <option value="3.0">3.0</option>
+            <option value="4.0" selected>4.0</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="field-label" data-i18n="field.firstName">Nome</label><input type="text" id="vFirstName"></div>
+          <div class="field"><label class="field-label" data-i18n="field.lastName">Cognome</label><input type="text" id="vLastName"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="field-label" data-i18n="field.org">Organizzazione</label><input type="text" id="vOrg"></div>
+          <div class="field"><label class="field-label" data-i18n="field.role">Ruolo</label><input type="text" id="vTitle"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="field-label" data-i18n="field.mobile">Cellulare</label><input type="tel" id="vMobile"></div>
+          <div class="field"><label class="field-label" data-i18n="field.home">Telefono fisso</label><input type="tel" id="vHome"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="field-label" data-i18n="field.fax">Fax</label><input type="tel" id="vFax"></div>
+          <div class="field"><label class="field-label" data-i18n="field.bday">Data di nascita</label><input type="date" id="vBday"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" data-i18n="field.email">Email</label>
+            <input type="email" id="vEmail">
+            <div class="indicator-msg bad" id="vEmailError" style="display:none;"></div>
+          </div>
+          <div class="field">
+            <label class="field-label" data-i18n="field.workEmail">Email aziendale</label>
+            <input type="email" id="vWorkEmail">
+            <div class="indicator-msg bad" id="vWorkEmailError" style="display:none;"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="field.website">Sito web</label>
+          <input type="text" id="vWebsite">
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="field-label" data-i18n="field.addr1">Indirizzo 1</label><input type="text" id="vAddr1"></div>
+          <div class="field"><label class="field-label" data-i18n="field.addr2">Indirizzo 2</label><input type="text" id="vAddr2"></div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="field.note">Note</label>
+          <textarea id="vNote"></textarea>
+        </div>
+      </div>
+
+      <div class="indicator">
+        <div class="indicator-label"><span data-i18n="density.label">Densità del QR</span><span id="densityPct">—</span></div>
+        <div class="indicator-bar"><div class="indicator-bar-fill" id="densityBar"></div></div>
+        <div class="indicator-msg" id="densityMsg"></div>
+      </div>
+    </div>
+
+    <!-- STILE -->
+    <div class="panel">
+      <div class="panel-title"><span class="num">02</span> <span data-i18n="sec.style">Stile</span></div>
+
+      <details class="section" open>
+        <summary data-i18n="sec.colors">Colori</summary>
+        <div class="toggle-row">
+          <button type="button" class="active" data-color-mode="flat" data-i18n="color.flat">Colore pieno</button>
+          <button type="button" data-color-mode="gradient" data-i18n="color.gradient">Gradiente</button>
+        </div>
+
+        <div id="flatColorField" class="field">
+          <label class="field-label" data-i18n="color.fg">Colore primo piano (moduli / occhi / contorno)</label>
+          <div class="color-row"><input type="color" id="dotsColorFlat" value="#16211F"></div>
+        </div>
+
+        <div id="gradientFields" style="display:none;">
+          <div class="field-row">
+            <div class="field"><label class="field-label" data-i18n="color.grad1">Colore 1</label><div class="color-row"><input type="color" id="gradColor1" value="#0E7C86"></div></div>
+            <div class="field"><label class="field-label" data-i18n="color.grad2">Colore 2</label><div class="color-row"><input type="color" id="gradColor2" value="#16211F"></div></div>
+          </div>
+          <div class="field">
+            <label class="field-label" data-i18n="color.gradType">Tipo di gradiente</label>
+            <div class="toggle-row">
+              <button type="button" class="active" data-grad-type="linear" data-i18n="color.linear">Lineare</button>
+              <button type="button" data-grad-type="radial" data-i18n="color.radial">Radiale</button>
+            </div>
+          </div>
+          <div class="field" id="angleField">
+            <label class="field-label" data-i18n="color.angle">Direzione (lineare)</label>
+            <div class="angle-presets">
+              <button type="button" class="active" data-angle="0">0°</button>
+              <button type="button" data-angle="45">45°</button>
+              <button type="button" data-angle="90">90°</button>
+            </div>
+          </div>
+          <div class="hint" data-i18n="color.gradHint">Un unico gradiente viene applicato in modo continuo a moduli, occhi, punti centrali e contorno.</div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" data-i18n="color.bg">Colore di sfondo</label>
+          <div class="color-row"><input type="color" id="bgColor" value="#EFF1EC"></div>
+        </div>
+
+        <div class="indicator">
+          <div class="indicator-label"><span data-i18n="contrast.label">Contrasto</span><span id="contrastVal">—</span></div>
+          <div class="indicator-bar"><div class="indicator-bar-fill" id="contrastBar"></div></div>
+          <div class="indicator-msg" id="contrastMsg"></div>
+        </div>
+      </details>
+
+      <details class="section">
+        <summary data-i18n="sec.dots">Stile dei moduli</summary>
+        <div class="swatch-group" id="dotStyleGroup">
+          <button type="button" class="swatch-btn active" data-dot-style="square">
+            <svg viewBox="0 0 34 34"><rect x="4" y="4" width="26" height="26" fill="currentColor"/></svg>
+            <span data-i18n="dots.square">Quadrato</span>
+          </button>
+          <button type="button" class="swatch-btn" data-dot-style="circle">
+            <svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="currentColor"/></svg>
+            <span data-i18n="dots.circle">Cerchio</span>
+          </button>
+          <button type="button" class="swatch-btn" data-dot-style="capsule-h">
+            <svg viewBox="0 0 34 34"><rect x="2" y="11" width="30" height="12" rx="6" fill="currentColor"/></svg>
+            <span data-i18n="dots.capsuleH">Capsula orizz.</span>
+          </button>
+          <button type="button" class="swatch-btn" data-dot-style="capsule-v">
+            <svg viewBox="0 0 34 34"><rect x="11" y="2" width="12" height="30" rx="6" fill="currentColor"/></svg>
+            <span data-i18n="dots.capsuleV">Capsula vert.</span>
+          </button>
+        </div>
+      </details>
+
+      <details class="section">
+        <summary data-i18n="sec.eyes">Stile occhi e punti centrali</summary>
+        <div class="field">
+          <label class="field-label" data-i18n="eyes.outer">Occhi (angoli)</label>
+          <div class="swatch-group" id="eyeStyleGroup">
+            <button type="button" class="swatch-btn active" data-eye-style="square">
+              <svg viewBox="0 0 34 34"><rect x="4" y="4" width="26" height="26" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+              <span data-i18n="eyes.sq">Quadrato</span>
+            </button>
+            <button type="button" class="swatch-btn" data-eye-style="rounded">
+              <svg viewBox="0 0 34 34"><rect x="4" y="4" width="26" height="26" rx="7" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+              <span data-i18n="eyes.rd">Arrotondato</span>
+            </button>
+            <button type="button" class="swatch-btn" data-eye-style="circle">
+              <svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="13" fill="none" stroke="currentColor" stroke-width="4"/></svg>
+              <span data-i18n="eyes.ci">Cerchio</span>
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="eyes.inner">Punti centrali</label>
+          <div class="swatch-group" id="eyeDotStyleGroup">
+            <button type="button" class="swatch-btn active" data-eyedot-style="square">
+              <svg viewBox="0 0 34 34"><rect x="10" y="10" width="14" height="14" fill="currentColor"/></svg>
+              <span data-i18n="eyes.sq">Quadrato</span>
+            </button>
+            <button type="button" class="swatch-btn" data-eyedot-style="rounded">
+              <svg viewBox="0 0 34 34"><rect x="10" y="10" width="14" height="14" rx="4" fill="currentColor"/></svg>
+              <span data-i18n="eyes.rd">Arrotondato</span>
+            </button>
+            <button type="button" class="swatch-btn" data-eyedot-style="circle">
+              <svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="8" fill="currentColor"/></svg>
+              <span data-i18n="eyes.ci">Cerchio</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <details class="section">
+        <summary data-i18n="sec.border">Contorno</summary>
+        <div class="field">
+          <label class="field-label" data-i18n="border.thickness">Spessore</label>
+          <div class="slider-row">
+            <input type="range" id="borderThickness" min="0" max="10" step="1" value="3">
+            <span class="slider-val" id="borderThicknessVal">3px</span>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="border.radius">Raggio angoli</label>
+          <div class="slider-row">
+            <input type="range" id="borderRadius" min="0" max="50" step="1" value="3">
+            <span class="slider-val" id="borderRadiusVal">3px</span>
+          </div>
+        </div>
+        <div class="hint" data-i18n="border.hint">Il colore del contorno segue lo stesso colore o gradiente dei moduli.</div>
+      </details>
+
+      <details class="section">
+        <summary data-i18n="sec.logo">Logo centrale</summary>
+        <div class="checkbox-row">
+          <input type="checkbox" id="logoEnabled">
+          <label for="logoEnabled" data-i18n="logo.enable">Includi un'immagine al centro del QR</label>
+        </div>
+        <div id="logoControls" style="display:none;">
+          <div class="dropzone" id="logoDropzone">
+            <span data-i18n="logo.drop">Trascina un'immagine qui, oppure clicca per selezionarla</span>
+            <div class="hint" data-i18n="logo.formats">PNG, JPG o WEBP · max 5MB</div>
+          </div>
+          <input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp" style="display:none;">
+          <div class="logo-preview" id="logoPreviewRow" style="display:none;">
+            <img id="logoPreviewImg" alt="">
+            <button type="button" id="logoRemoveBtn" data-i18n="logo.remove">Rimuovi</button>
+          </div>
+          <div class="gen-error" id="logoError"></div>
+        </div>
+      </details>
+
+      <details class="section">
+        <summary data-i18n="sec.output">Output</summary>
+        <div class="field">
+          <label class="field-label" data-i18n="output.ec">Livello di correzione errore</label>
+          <select id="ecLevel"></select>
+          <div class="hint" id="ecHint"></div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="output.size">Dimensione immagine</label>
+          <select id="outputSize">
+            <option value="256">256 × 256 px</option>
+            <option value="512" selected>512 × 512 px</option>
+            <option value="1024">1024 × 1024 px</option>
+            <option value="2048">2048 × 2048 px</option>
+          </select>
+        </div>
+      </details>
+
+      <details class="section">
+        <summary data-i18n="sec.presets">Preset di stile</summary>
+        <div class="field">
+          <label class="field-label" data-i18n="preset.name">Nome preset</label>
+          <div class="preset-row">
+            <input type="text" id="presetName" data-i18n-ph="preset.name.ph" placeholder="es. Blu aziendale">
+            <button type="button" class="btn-small" id="presetSaveBtn" data-i18n="preset.save">Salva</button>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" data-i18n="preset.load">Preset salvati</label>
+          <div class="preset-row">
+            <select id="presetSelect"><option value="" data-i18n="preset.none">— nessuno —</option></select>
+            <button type="button" class="btn-small" id="presetLoadBtn" data-i18n="preset.applyBtn">Carica</button>
+            <button type="button" class="btn-small" id="presetDeleteBtn" data-i18n="preset.deleteBtn">Elimina</button>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- ===================== COLONNA ANTEPRIMA ===================== -->
+  <div class="preview-col">
+    <div class="panel preview-panel">
+      <div class="panel-title"><span class="num">03</span> <span data-i18n="sec.preview">Anteprima</span></div>
+      <div class="canvas-wrap">
+        <canvas id="qrCanvas" width="512" height="512"></canvas>
+        <div class="canvas-placeholder" id="canvasPlaceholder" data-i18n="preview.placeholder">Configura il contenuto e premi «Genera» per vedere il QR</div>
+      </div>
+      <div class="gen-error" id="genError"></div>
+      <div class="action-row" id="desktopActions">
+        <button type="button" class="btn btn-primary" id="generateBtn" data-i18n="action.generate">Genera</button>
+        <button type="button" class="btn btn-ghost" id="downloadBtn" data-i18n="action.download" disabled>Scarica PNG</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sticky-mobile-bar">
+  <button type="button" class="btn btn-primary" id="generateBtnMobile" data-i18n="action.generate">Genera</button>
+  <button type="button" class="btn btn-ghost" id="downloadBtnMobile" data-i18n="action.download" disabled>Scarica PNG</button>
+</div>
+
+<footer class="app-footer" data-i18n="footer.note">Tutto avviene nel tuo browser — nessun dato lascia questo dispositivo.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
