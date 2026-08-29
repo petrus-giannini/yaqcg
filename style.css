@@ -38,20 +38,19 @@
   .theme-switch{ display:flex; align-items:center; gap:10px; flex:1; min-width:180px; max-width:360px; }
   .theme-switch #theme-label{
     font-family:var(--font-display); font-size:11px; text-transform:uppercase;
-    letter-spacing:0.15em; color:var(--ink-soft); white-space:nowrap; flex:none;
+    letter-spacing:0.1em; color:var(--ink-soft); white-space:nowrap; flex:none;
+    width:118px; overflow:hidden; text-overflow:ellipsis;
   }
-  .theme-switch #theme-slider{ flex:1; accent-color:var(--accent); cursor:pointer; }
+  .theme-switch #theme-slider{ flex:1; width:100%; accent-color:var(--accent); cursor:pointer; }
   @media (max-width:920px){
     .theme-switch{ order:3; flex-basis:100%; max-width:none; }
   }
   .brand{ display:flex; align-items:center; gap:10px; }
   .brand-mark{
-    width:34px;height:34px; border:2px solid var(--ink); border-radius:8px;
-    position:relative; flex:none;
-    background:
-      linear-gradient(var(--ink) 2px, transparent 0) 0 0/8px 8px,
-      linear-gradient(90deg, var(--ink) 2px, transparent 0) 0 0/8px 8px;
-    background-color: transparent;
+    width:34px;height:34px; border-radius:8px;
+    flex:none;
+    background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzNiMTQ2NCIvPjx0ZXh0IHg9IjEiIHk9IjIwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iOTAwIiBmb250LXNpemU9IjIxIiBmaWxsPSIjZmJlOThhIj5RPC90ZXh0Pjx0ZXh0IHg9IjMwIiB5PSIyOSIgdGV4dC1hbmNob3I9ImVuZCIgZm9udC1mYW1pbHk9IkFyaWFsIEJsYWNrLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjkwMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iI2ZiZTk4YSI+UjwvdGV4dD48L3N2Zz4=");
+    background-size:cover;
   }
   .brand-title{ font-family:var(--font-display); font-weight:700; font-size:15px; letter-spacing:0.02em; }
   .brand-sub{ font-size:11px; color:var(--ink-soft); font-family:var(--font-display); text-transform:uppercase; letter-spacing:0.08em; }
@@ -86,6 +85,8 @@
     padding:20px;
     position:relative;
     margin-bottom:18px;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
   }
   .panel::before,.panel::after{
     content:"+"; position:absolute; font-family:var(--font-display); color:var(--line); font-size:14px; line-height:1;
@@ -132,6 +133,7 @@
   .swatch-btn{
     border:1.5px solid var(--line); background:var(--surface); border-radius:10px; padding:8px;
     cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; width:82px;
+    color:var(--ink);
   }
   .swatch-btn svg{ width:34px; height:34px; }
   .swatch-btn span{ font-size:10px; font-family:var(--font-display); text-align:center; color:var(--ink-soft); letter-spacing:0.02em; }
@@ -155,7 +157,7 @@
   .angle-presets{ display:flex; gap:6px; }
   .angle-presets button{
     font-family:var(--font-display); font-size:12px; padding:6px 10px; border:1px solid var(--line); background:var(--surface);
-    border-radius:6px; cursor:pointer;
+    border-radius:6px; cursor:pointer; color:var(--ink);
   }
   .angle-presets button.active{ border-color:var(--accent); color:var(--accent-ink); background:var(--surface); background:color-mix(in srgb, var(--accent) 16%, var(--surface)); font-weight:700; }
 
@@ -192,13 +194,13 @@
   .action-row{ display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
   .btn{
     font-family:var(--font-display); font-weight:700; font-size:13px; letter-spacing:0.03em; text-transform:uppercase;
-    padding:12px 18px; border-radius:9px; cursor:pointer; border:1.5px solid var(--ink); flex:1;
+    padding:12px 18px; border-radius:9px; cursor:pointer; border:1.5px solid var(--ink); flex:1; color:var(--ink);
   }
   .btn-primary{ background:var(--ink); color:var(--paper); }
   .btn-primary:disabled{ opacity:0.4; cursor:not-allowed; }
   .btn-ghost{ background:transparent; color:var(--ink); }
   .btn-ghost:disabled{ opacity:0.4; cursor:not-allowed; }
-  .btn-small{ font-family:var(--font-display); font-size:11px; padding:8px 10px; border:1px solid var(--line); border-radius:7px; background:var(--surface); cursor:pointer; }
+  .btn-small{ font-family:var(--font-display); font-size:11px; padding:8px 10px; border:1px solid var(--line); border-radius:7px; background:var(--surface); cursor:pointer; color:var(--ink); }
 
   .gen-error{ background:var(--surface); background:color-mix(in srgb, var(--danger) 16%, var(--surface)); border:1px solid var(--danger); color:var(--ink); padding:10px 12px; border-radius:8px; font-size:13px; margin-top:12px; display:none; }
   .gen-error.show{ display:block; }
@@ -238,8 +240,8 @@
 
 /* ---------- ACIDO (default) ---------- */
 body.theme-acido{
-  --paper:#0a0a0f; --panel:rgba(255,255,255,0.035); --surface:rgba(0,200,120,0.05);
-  --ink:#e8ffe8; --ink-soft:rgba(200,255,200,0.5);
+  --paper:#0a0a0f; --panel:rgba(12,28,22,0.6); --surface:rgba(0,200,120,0.07);
+  --ink:#e8ffe8; --ink-soft:rgba(214,255,224,0.8);
   --line:rgba(0,200,120,0.28); --accent:#00c878; --accent-ink:#00c878; --amber:#ffe36a;
   --ok:#2ee6a0; --danger:#ff5470;
   --radius-panel:4px; --panel-border-width:1px;
@@ -280,7 +282,7 @@ body.theme-classico-scuro{
 /* ---------- CIRCO ---------- */
 body.theme-circo{
   --paper:#fff9e6; --panel:#ffffff; --surface:#fffbe6;
-  --ink:#222222; --ink-soft:#888888;
+  --ink:#222222; --ink-soft:#707070;
   --line:#e0000a; --accent:#e0000a; --accent-ink:#1a44cc; --amber:#ffd700;
   --ok:#2f9e58; --danger:#e0000a;
   --radius-panel:12px; --panel-border-width:3px;
@@ -296,7 +298,7 @@ body.theme-circo .panel{ box-shadow:5px 5px 0 var(--amber), 9px 9px 0 var(--acce
 /* ---------- STALINGRADO ---------- */
 body.theme-stalingrado{
   --paper:#1a0000; --panel:rgba(20,0,0,0.9); --surface:rgba(0,0,0,0.45);
-  --ink:#f0d080; --ink-soft:rgba(240,208,128,0.55);
+  --ink:#f0d080; --ink-soft:rgba(240,208,128,0.82);
   --line:#cc1a1a; --accent:#cc1a1a; --accent-ink:#cc1a1a; --amber:#f0d080;
   --ok:#5acc88; --danger:#cc1a1a;
   --radius-panel:0px; --panel-border-width:3px;
@@ -315,7 +317,7 @@ body.theme-stalingrado .field-label, body.theme-stalingrado .brand-title{ text-t
 /* ---------- HABANA ---------- */
 body.theme-habana{
   --paper:#002a8f; --panel:rgba(0,15,60,0.85); --surface:rgba(0,0,0,0.4);
-  --ink:#ffffff; --ink-soft:rgba(255,255,255,0.6);
+  --ink:#ffffff; --ink-soft:rgba(255,255,255,0.82);
   --line:#cc1a1a; --accent:#cc1a1a; --accent-ink:#cc1a1a; --amber:#ffffff;
   --ok:#5acc88; --danger:#cc1a1a;
   --radius-panel:0px; --panel-border-width:3px;
@@ -338,7 +340,7 @@ body.theme-habana .field-label, body.theme-habana .brand-title{ text-transform:u
 /* ---------- HO CHI MIN ---------- */
 body.theme-ho-chi-min{
   --paper:#cc0000; --panel:rgba(0,0,0,0.78); --surface:rgba(0,0,0,0.5);
-  --ink:#ffd700; --ink-soft:rgba(255,215,0,0.55);
+  --ink:#ffd700; --ink-soft:rgba(255,222,80,0.82);
   --line:#ffd700; --accent:#cc0000; --accent-ink:#ffd700; --amber:#ffd700;
   --ok:#5acc88; --danger:#cc0000;
   --radius-panel:0px; --panel-border-width:3px;

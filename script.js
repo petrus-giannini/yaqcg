@@ -120,7 +120,7 @@ function applyI18n(){
   document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
     el.setAttribute('placeholder', t(el.getAttribute('data-i18n-ph')));
   });
-  document.title = 'yaqcg - Yet Another QrCode Generator';
+  document.title = 'QrCode generator';
   populateEcSelect();
   updateEcHint();
   updateDensityIndicator();
